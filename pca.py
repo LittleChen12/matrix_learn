@@ -28,15 +28,34 @@ W, Q = np.linalg.eig(S)
 w_args = np.flip(np.argsort(W))
 Q = Q[:, w_args]
 W = W[w_args]
-# 新的数据
-C = np.matmul(im2, Q)
 
 # 主成分选取
-k = 10
+k = 30
+
+# 新的数据
+C = np.matmul(im2, Q[:, :k])
+
+# 求矩阵的转置
+Q_T = Q.T[:k, :]
+
+# # 获取矩阵的行数和列数
+# rows, cols = Q_T.shape
+#
+# # 输出行数和列数
+# print(f"行数: {rows}")
+# print(f"列数: {cols}")
+
+# 查看不同的主成分
+# 选择要保留的行索引
+row_index = 26
+# 创建一个与原矩阵相同形状的零矩阵
+result = np.zeros_like(C)
+# 将选定行的元素复制到结果矩阵中
+result[:, row_index] = C[:, row_index]
 
 # 数据还原到原本的空间
-im3 = np.matmul(C[:, :k], Q.T[:k, :])
-
+#im3 = np.matmul(C, Q_T)
+im3 = np.matmul(result, Q_T)
 im3 = im3 * sds + means
 im3 = im3.astype('uint8')
 image_show = Image.fromarray(im3)
