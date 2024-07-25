@@ -1,7 +1,7 @@
 import numpy as np
 from PIL import Image
 
-img_fn = "test_2.png"
+img_fn = "test_3.png"
 img = Image.open(img_fn)
 
 # 将图片处理为灰度图片
@@ -30,7 +30,7 @@ Q = Q[:, w_args]
 W = W[w_args]
 
 # 主成分选取
-k = 30
+k = 5
 
 # 新的数据
 C = np.matmul(im2, Q[:, :k])
@@ -47,15 +47,15 @@ Q_T = Q.T[:k, :]
 
 # 查看不同的主成分
 # 选择要保留的行索引
-row_index = 26
+row_index = 0
 # 创建一个与原矩阵相同形状的零矩阵
 result = np.zeros_like(C)
 # 将选定行的元素复制到结果矩阵中
 result[:, row_index] = C[:, row_index]
 
 # 数据还原到原本的空间
-#im3 = np.matmul(C, Q_T)
-im3 = np.matmul(result, Q_T)
+im3 = np.matmul(C, Q_T)
+#im3 = np.matmul(result, Q_T)
 im3 = im3 * sds + means
 im3 = im3.astype('uint8')
 image_show = Image.fromarray(im3)
